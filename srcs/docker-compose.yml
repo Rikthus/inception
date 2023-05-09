@@ -1,7 +1,11 @@
 version: "3.8"
 
 services:
-  db:
+
+  mariadb:
+    container_name: my-mariadb
+    networks:
+      - inception
     build: 
       context: ./requirements/mariadb/
       args:
@@ -9,12 +13,30 @@ services:
         - DB_ROOT_PWD=${DB_ROOT_PWD}
         - DB_USER=${DB_USER}
         - DB_USER_PWD=${DB_USER_PWD}
+    image: my-mariadb:custom 
     restart: on-failure
-    networks:
-      - inception
     volumes:
       - mariadb_volume:/var/lib/mysql
     env_file: .env
+
+
+  wordpress:
+    container_name: my-wordpress
+    networks:
+      - inception
+    build:
+      context: ./requirements/wordpress
+      args:
+        - WP_ADMIN=${WP_ADMIN}
+        - WP_ADMIN_PWD=${WP_ADMIN_PWD}
+        - WP_USER=${WP_USER}
+        - WP_USER_PWD=${WP_USER_PWD}
+    image: my-wordpress:custom
+    restart: on-failure
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress_volume:/var/www/html/wp_blog
 
 networks:
   inception:
@@ -23,11 +45,13 @@ networks:
 
 volumes:
   mariadb_volume:
+    name: mariadb_volume
     driver_opts:
       type: none
       o: bind
       device : /Users/tulipe/maxperei/data/mariadb_volume
   wordpress_volume:
+    name: wordpress_volume
     driver_opts:
       type: none
       o: bind
