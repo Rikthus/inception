@@ -1,10 +1,5 @@
 FROM debian:buster
 
-ARG WP_ADMIN
-ARG WP_ADMIN_PWD
-ARG WP_USER
-ARG WP_USER_PWD
-
 RUN apt-get update -y \
 	&& apt-get upgrade -y \
 	&& apt-get install mariadb-client php-fpm php-mysql curl -y \
