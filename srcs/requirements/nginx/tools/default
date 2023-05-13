@@ -1,29 +1,24 @@
-server {
-    # specify IPv4 & IPv6 ports to listen on
-    listen 443 ssl default_server;
-    listen [::]:443 ssl default_server;
+server	{
+	listen 443 ssl;
+	listen [::]:443 ssl;
 
-    # specify ssl protocols
-    ssl on;
+	server_name maxperei.42.fr;
+
 	ssl_protocols TLSv1.2 TLSv1.3;
- 
-    # indicate locations of SSL key and certificate files.
-    ssl_certificate /etc/ssl/certs/inception.crt;
-    ssl_certificate_key /etc/ssl/private/inception.key;
- 
-    # indicate the server name
-    server_name www.maxperei.42.fr maxperei.42.fr;
 
-    root /var/www/html/;
+	ssl_certificate /etc/ssl/certs/inception.crt;
+	ssl_certificate_key /etc/ssl/private/inception.key;
 
-    index index.php index.html;
+	root /var/www/html;
 
-    location / {
-        try_files $uri $uri/ =404;
-    }
-	
-	location ~ \.php$ {
-    	include snippets/fastcgi-php.conf;
- 		fastcgi_pass my-wordpress:9000;
-    }
+	index index.php;
+
+	location /	{
+		try_files $uri $uri/ =404;
+	}
+
+	location ~ \.php$	{
+		include snippets/fastcgi-php.conf;
+		fastcgi_pass my-wordpress:9000;
+	}
 }
