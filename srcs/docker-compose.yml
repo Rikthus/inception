@@ -6,6 +6,7 @@ services:
     container_name: my-mariadb
     networks:
       - inception
+    env_file: .env
     build: 
       context: ./requirements/mariadb/
       args:
@@ -17,8 +18,6 @@ services:
     restart: on-failure
     volumes:
       - mariadb_volume:/var/lib/mysql
-    env_file: .env
-
 
   wordpress:
     container_name: my-wordpress
@@ -26,8 +25,7 @@ services:
       - inception
     build:
       context: ./requirements/wordpress
-    env_file:
-      - .env
+    env_file: .env
     environment:
       - WP_ADMIN=${WP_ADMIN}
       - WP_ADMIN_PWD=${WP_ADMIN_PWD}
@@ -41,7 +39,23 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - wordpress_volume:/var/www/html/wp_blog
+      - wordpress_volume:/var/www/html/
+
+  nginx:
+    container_name: my-nginx
+    networks:
+      - inception
+    build:
+      context: ./requirements/nginx
+    image: my-nginx:custom
+    ports:
+      - 443:443
+    restart: on-failure
+    depends_on:
+      - mariadb
+      - wordpress
+    volumes:
+      - wordpress_volume:/var/www/html/
 
 networks:
   inception:

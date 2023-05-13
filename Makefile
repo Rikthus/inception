@@ -1,6 +1,5 @@
 COMPOSE			=	docker-compose
 COMPOSE_FILE	=	./srcs/docker-compose.yml
-PROJECT			=	srcs
 
 all:	up
 
@@ -12,11 +11,11 @@ down :
 
 clean :
 		$(COMPOSE) -f $(COMPOSE_FILE) down -v
-		# docker network rm $(PROJECT)_inception
 
 fclean	: clean
-		docker image rmi my-mariadb:custom
+		docker image rmi my-nginx:custom
 		docker image rmi my-wordpress:custom
+		docker image rmi my-mariadb:custom
 
 logs:
 		$(COMPOSE) -f $(COMPOSE_FILE) logs

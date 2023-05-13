@@ -1,6 +1,6 @@
 #!bin/bash
 
-cd /var/www/html/wp_blog
+cd /var/www/html/
 if ! wp core is-installed --allow-root
 then
 	wait 5
