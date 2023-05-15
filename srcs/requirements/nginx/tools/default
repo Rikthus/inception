@@ -4,12 +4,13 @@ server	{
 
 	server_name maxperei.42.fr;
 
+	ssl on;
 	ssl_protocols TLSv1.2 TLSv1.3;
 
 	ssl_certificate /etc/ssl/certs/inception.crt;
 	ssl_certificate_key /etc/ssl/private/inception.key;
 
-	root /var/www/html;
+	root /var/www/html/inception;
 
 	index index.php;
 

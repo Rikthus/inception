@@ -6,13 +6,13 @@ RUN apt-get update -y \
 	&& curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \  
 	&& chmod +x wp-cli.phar \
 	&& mv wp-cli.phar /usr/local/bin/wp \
-	&& mkdir -p /var/www/html \
-	&& chown -R www-data:www-data /var/www/html \
-	&& chmod 755 /var/www/html
+	&& mkdir -p /var/www/html/inception \
+	&& chown -R www-data:www-data /var/www/html/inception \
+	&& chmod 755 /var/www/html/inception
 
 COPY ./tools/www.conf etc/php/7.3/fpm/pool.d/www.conf
 
-RUN	 wp core download --path=/var/www/html --locale=fr_FR --allow-root
+RUN	 wp core download --path=/var/www/html/inception --locale=fr_FR --allow-root
 
 COPY ./tools/wp_init.sh /tmp/wp_init.sh
 
